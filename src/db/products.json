@@ -1,0 +1,46 @@
+[
+  {
+    "id": "abc",
+    "title": "Laptop XYZ",
+    "description": "Laptop con procesador Intel i7 y 16GB de RAM.",
+    "code": "LAP123",
+    "price": 1200,
+    "status": true,
+    "stock": 50,
+    "category": "Electronics",
+    "thumbnails": []
+  },
+  {
+    "id": "def",
+    "title": "Smartphone ABC",
+    "description": "Smartphone con cámara de 48MP y batería de 5000mAh.",
+    "code": "SMART456",
+    "price": 800,
+    "status": true,
+    "stock": 100,
+    "category": "Electronics",
+    "thumbnails": []
+  },
+  {
+    "id": "f3788858-49a4-4816-b4ea-063a85563869",
+    "title": "Gaseosa",
+    "description": "Rica",
+    "code": "Be123Ga",
+    "price": 4500,
+    "status": true,
+    "stock": 13,
+    "category": "Bebidas",
+    "thumbnails": []
+  },
+  {
+    "id": "5c135534-5bed-4f68-8d0d-01ce88b87afc",
+    "title": "Gaseosa",
+    "description": "Rica",
+    "code": "Be123Ga",
+    "price": 4500,
+    "status": true,
+    "stock": 13,
+    "category": "Bebidas",
+    "thumbnails": []
+  }
+]
