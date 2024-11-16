@@ -26,7 +26,7 @@ Sigue estos pasos para instalar y ejecutar la aplicación:
    cd src
 7. **Ejecutar el siguiente comando**:
    ```bash
-   node --watch main.js
+   node --watch app.js
 8. **En el navegador o postman va a poder acceder al servidor en esta ruta**:
    ```bash
    http://localhost:8080/
