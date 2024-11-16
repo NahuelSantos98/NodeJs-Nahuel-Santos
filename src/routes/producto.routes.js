@@ -14,11 +14,15 @@ const products = JSON.parse(productsData);
 productRouter.get('/', (req, res) => {
     let limit = parseInt(req.query.limit) || 10
     let productsLimited = products.slice(0, limit)
-    res.status(200).json({ status: "successful", data: productsLimited })
+    res.status(200).json({ status: "success", data: productsLimited })
 });
 
-productRouter.get('/:pId', (req, res) => {
-    let prodId = req.params.pId.toString()
+productRouter.get('/:pid', (req, res) => {
+    let prodId = req.params.pid
+
+    if(!prodId){
+        return res.status(404).json({status: "error", message: "The Product Id must be provided"})
+    }
 
     let productFound = products.find(p => p.id == prodId)
 
@@ -26,7 +30,7 @@ productRouter.get('/:pId', (req, res) => {
         return res.status(404).json({ status: "error", message: `Product with id: ${prodId} not found` })
     }
 
-    res.status(200).json({ status: "successful", data: productFound })
+    res.status(200).json({ status: "success", data: productFound })
 })
 
 productRouter.post('/', async (req, res) => {
@@ -41,21 +45,21 @@ productRouter.post('/', async (req, res) => {
         products.push(newProduct)
 
         await fs.writeFile(productsPath, JSON.stringify(products, null, 2), "utf-8")
-        res.status(201).json({status: "successful", message: `The product has been created with id: ${newProduct.id}`})
+        res.status(201).json({status: "success", message: `The product has been created with id: ${newProduct.id}`, data: newProduct})
     } catch (e) {
         console.error('Error saving the product:', error);
         res.status(500).json({status: "error", message: "Internal server error. Please try again later."})
     }
 })
 
-productRouter.put('/:pId', async (req, res) => {
-    let prodId = req.params.pId
+productRouter.put('/:pid', async (req, res) => {
+    let prodId = req.params.pid
     let { title, description, code, price, status, stock, category, thumbnails } = req.body
 
     let productToModify = products.find(p => p.id === prodId)
 
-    if (!prodId) {
-        return res.status(400).json({ status: "error", message: "Product Id not provided" })
+    if(!prodId){
+        return res.status(404).json({status: "error", message: "The Product Id must be provided"})
     }
 
     if (!productToModify) {
@@ -73,17 +77,22 @@ productRouter.put('/:pId', async (req, res) => {
 
     try {
         await fs.writeFile(productsPath, JSON.stringify(products, null, 2), "utf-8")
-        res.status(200).json({status: "successful", message: "Product modified successfully", data: productToModify})
+        res.status(200).json({status: "success", message: "Product modified successfully", data: productToModify})
     } catch (e) {
         console.error("Error modifying the product: ", e);
         res.status(500).json({status: "error", message: "Internal server error. Please try again later."})
     }
 })
 
-productRouter.delete('/:pId', async (req, res) => {
-    let prodId = req.params.pId
+productRouter.delete('/:pid', async (req, res) => {
+    let prodId = req.params.pid
+
+    if(!prodId){
+        return res.status(404).json({status: "error", message: "The Product Id must be provided"})
+    }
 
     let findProduct = products.find(p=> p.id === prodId)
+    
     if (!findProduct) {
         return res.status(404).json({ status: "error", message: `Product with id ${prodId} not found` })
     }
@@ -95,7 +104,7 @@ productRouter.delete('/:pId', async (req, res) => {
 
     try {
         await fs.writeFile(productsPath, JSON.stringify(products, null, 2), 'utf-8')
-        res.status(200).json({ status: "succesful", message: `Product with id: ${prodId} has been deleted ` })
+        res.status(200).json({ status: "succesful", message: `Product with id: ${prodId} has been deleted` })
     } catch (e) {
         console.error("Error deleting the product:", error);
         res.status(500).json({status: "error",message: "Internal server error. Please try again later."})
