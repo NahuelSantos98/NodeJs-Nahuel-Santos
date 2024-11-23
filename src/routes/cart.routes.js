@@ -1,17 +1,17 @@
 import { Router } from "express";
 import { promises as fs } from 'node:fs'
-import { __dirname } from '../utils/path.js'
+import {__dirname} from '../path.js'
 import path from 'path';
 import Cart from "../entity/Cart.js";
 
-const routeCart = Router()
+const cartRouter = Router()
 
-const cartsPath = path.resolve(__dirname, '../db/carts.json');
+const cartsPath = path.resolve(__dirname, 'db/carts.json');
 const cartsData = await fs.readFile(cartsPath, 'utf-8');
 const carts = JSON.parse(cartsData);
 
 
-routeCart.post('/', async(req, res)=>{
+cartRouter.post('/', async(req, res)=>{
     let body = req.body
 
     if (!body) {
@@ -31,7 +31,7 @@ routeCart.post('/', async(req, res)=>{
     }
 })
 
-routeCart.get('/:cid', async(req, res)=>{
+cartRouter.get('/:cid', async(req, res)=>{
     let cartId = req.params.cid
     let cartFound = carts.find(c=> c.id === cartId)
 
@@ -45,7 +45,7 @@ routeCart.get('/:cid', async(req, res)=>{
     res.status(200).json({ status: "success", data: cartFound })
 })
 
-routeCart.post('/:cid/product/:pid', async (req, res) => {
+cartRouter.post('/:cid/product/:pid', async (req, res) => {
     const cartId = req.params.cid;
     const prodId = req.params.pid;
     const { quantity } = req.body;
@@ -82,4 +82,4 @@ routeCart.post('/:cid/product/:pid', async (req, res) => {
 });
 
 
-export default routeCart;
+export default cartRouter;

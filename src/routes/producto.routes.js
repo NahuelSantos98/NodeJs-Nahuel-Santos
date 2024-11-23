@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { promises as fs } from 'node:fs'
-import { __dirname } from '../utils/path.js'
+import {__dirname} from '../path.js'
 import path from 'path';
 import Product from "../entity/Product.js";
 
 const productRouter = Router();
 
-const productsPath = path.resolve(__dirname, '../db/products.json');
+const productsPath = path.resolve(__dirname, 'db/products.json');
 const productsData = await fs.readFile(productsPath, 'utf-8');
 const products = JSON.parse(productsData);
 

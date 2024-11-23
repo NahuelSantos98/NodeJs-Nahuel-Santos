@@ -2,7 +2,7 @@
   {
     "id": "5c135534-5bed-4f68-8d0d-01ce88b87afc",
     "title": "Fernet",
-    "description": "Si no se toma con Coca es amarga",
+    "description": "Fernet description",
     "code": "A123B",
     "price": 9500,
     "status": true,
@@ -13,7 +13,7 @@
   {
     "id": "a34bb44b-b79a-4064-b725-b00f446f1abb",
     "title": "Coca-Cola",
-    "description": "Top bebidas del mundo",
+    "description": "Coca-Cola description",
     "code": "B123C",
     "price": 10500,
     "status": true,
@@ -22,14 +22,47 @@
     "thumbnails": []
   },
   {
-    "id": "630fc3c9-0942-4a64-a795-722c7fb569e7",
-    "title": "Hola, cambia?",
-    "description": "Este producto se creó para comprobar funcionamiento.",
-    "code": "1273",
-    "price": 500,
+    "id": "3edc996b-e27e-4570-a133-62cc6996d69d",
+    "title": "Aquarius",
+    "description": "Aquarius description",
+    "code": "BE432",
+    "price": 2500,
     "status": true,
-    "stock": 2,
-    "category": "None",
+    "stock": 10,
+    "category": "Bebidas",
+    "thumbnails": []
+  },
+  {
+    "id": "10c2b336-9833-4ce7-a919-e52d20b0f170",
+    "title": "Smirnoff",
+    "description": "Smirnoff description",
+    "code": "QF519",
+    "price": 9000,
+    "status": true,
+    "stock": 30,
+    "category": "Bebidas",
+    "thumbnails": []
+  },
+  {
+    "id": "6498ebf9-a329-4959-a61e-088a924b6ad7",
+    "title": "Chupetin Pop",
+    "description": "Pop description",
+    "code": "RF875",
+    "price": 100,
+    "status": true,
+    "stock": 60,
+    "category": "Golosinas",
+    "thumbnails": []
+  },
+  {
+    "id": "e4eccd2c-7a0c-480c-bee3-83f81ec6bb65",
+    "title": "Chocolate Block",
+    "description": "Block description",
+    "code": "AD692",
+    "price": 1500,
+    "status": true,
+    "stock": 25,
+    "category": "Golosinas",
     "thumbnails": []
   }
 ]
