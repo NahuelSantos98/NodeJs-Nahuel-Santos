@@ -15,8 +15,8 @@ viewsRouter.get('/products', async (req, res) => {
         const products = JSON.parse(productsData);
         res.render('templates/index', { products });
     } catch (error) {
-        console.error('Error al leer los productos:', error);
-        res.status(500).send('Error interno del servidor');
+        console.error('Error reading the products', error);
+        res.status(500).json({status: 'error', message: 'Error reading the products', });
     }
 });
 
