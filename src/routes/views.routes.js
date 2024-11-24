@@ -7,15 +7,18 @@ const viewsRouter = Router()
 
 
 const productsPath = path.resolve(__dirname, 'db/products.json');
-const productsData = await fs.readFile(productsPath, 'utf-8');
-const products = JSON.parse(productsData);
 
 
-
-
-viewsRouter.get('/products', (req, res)=>{
-    res.render('templates/index', {products})
-})
+viewsRouter.get('/products', async (req, res) => {
+    try {
+        const productsData = await fs.readFile(productsPath, 'utf-8');
+        const products = JSON.parse(productsData);
+        res.render('templates/index', { products });
+    } catch (error) {
+        console.error('Error al leer los productos:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
 
 viewsRouter.get('/realtimeproducts', (req, res)=>{
     res.render('templates/realTimeProducts', {products})

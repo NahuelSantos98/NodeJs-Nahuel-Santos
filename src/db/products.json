@@ -64,5 +64,27 @@
     "stock": 25,
     "category": "Golosinas",
     "thumbnails": []
+  },
+  {
+    "id": "9a264cc4-188d-4ab6-9cae-d987cbf2d46d",
+    "title": "Agua",
+    "description": "Agua description",
+    "code": "AW234",
+    "price": 1000,
+    "status": true,
+    "stock": 12,
+    "category": "Bebidas",
+    "thumbnails": []
+  },
+  {
+    "id": "194e41f9-2ccb-4cc2-acff-27e3a15462a4",
+    "title": "Manzanas",
+    "description": "Manzana Description",
+    "code": "WR234",
+    "price": 150,
+    "status": true,
+    "stock": 30,
+    "category": "Frutas",
+    "thumbnails": []
   }
 ]
