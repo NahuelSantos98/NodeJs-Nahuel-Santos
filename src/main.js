@@ -5,10 +5,17 @@ import {create} from 'express-handlebars'
 import path from 'path'
 import { __dirname } from './path.js'
 import viewsRouter from './routes/views.routes.js'
+import { Server } from 'socket.io'
 
 const app = express()
 const PORT = 8080
 const hdbs = create()
+
+const httpServer = app.listen(PORT, ()=>{
+    console.log(`Server listening on port http://localhost:${PORT}/`) 
+})
+
+const socketServer = new Server(httpServer)
 
 
 app.use(express.json())
@@ -32,6 +39,10 @@ app.use((req, res) => {
 });
 
 
-app.listen(PORT, ()=>{
-    console.log(`Server listening on port http://localhost:${PORT}/`) 
+socketServer.on('connection', (socket)=>{
+    console.log(`Connection id: ${socket.id}`);
+
+    socket.on('disconnect', () => {
+        console.log('User desconectado, ID:', socket.id);
+    });
 })

@@ -1,3 +1,6 @@
+const socket = io()
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const productForm = document.getElementById('productForm');
 
