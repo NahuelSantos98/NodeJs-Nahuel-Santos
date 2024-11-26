@@ -42,6 +42,10 @@ app.use((req, res) => {
 socketServer.on('connection', (socket)=>{
     console.log(`Connection id: ${socket.id}`);
 
+    socket.on('createProduct', (data)=>{
+        socket.emit('responseProducts', )
+    })
+
     socket.on('disconnect', () => {
         console.log('User desconectado, ID:', socket.id);
     });

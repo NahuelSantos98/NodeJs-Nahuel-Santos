@@ -21,7 +21,6 @@ viewsRouter.get('/products', async (req, res) => {
 });
 
 
-
 viewsRouter.get('/realtimeproducts', async(req, res)=>{
     const productsData = await fs.readFile(productsPath, 'utf-8');
     const products = JSON.parse(productsData);
