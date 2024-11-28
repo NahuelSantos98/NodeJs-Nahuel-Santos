@@ -32,7 +32,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
-app.use('/views', viewsRouter)
+app.use(viewsRouter)
 
 app.use((req, res) => {
     res.status(404).json({status: "error", message: "No request for this endpoint"});
@@ -40,11 +40,7 @@ app.use((req, res) => {
 
 
 socketServer.on('connection', (socket)=>{
-    console.log(`Connection id: ${socket.id}`);
-
-    socket.on('createProduct', (data)=>{
-        socket.emit('responseProducts', )
-    })
+    console.log(`Conexión id: ${socket.id}`);
 
     socket.on('disconnect', () => {
         console.log('User desconectado, ID:', socket.id);

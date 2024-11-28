@@ -2,13 +2,17 @@
     <h1>Products</h1>
     <article class="productCard-container">
         {{#each productsLimited}}
-        <div class="productCard">
-            <h3>{{title}}</h3>
-            <p>{{description}}</p>
-            <p>Price: ${{price}}</p>
-            <p>Stock: {{stock}}</p>
-            <p>Category: {{category}}</p>
-        </div>
+            {{#if status}}
+                <div class="productCard">
+                    <h3>{{title}}</h3>
+                    <p>{{description}}</p>
+                    <p>Price: ${{price}}</p>
+                    <p>Stock: {{stock}}</p>
+                    <p>Category: {{category}}</p>
+                    <p>Code: {{code}}</p>
+                    <p>Status: {{status}}</p>
+                </div>
+            {{/if}}
         {{/each}}
     </article>
 </section>
