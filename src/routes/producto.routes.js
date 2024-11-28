@@ -14,7 +14,7 @@ const products = JSON.parse(productsData);
 productRouter.get('/', (req, res) => {
     let limit = parseInt(req.query.limit) || 10
     let productsLimited = products.slice(0, limit)
-    res.status(200).json({ status: "success", data: productsLimited })
+    res.status(200).render('templates/realTimeProducts', {productsLimited})
 });
 
 productRouter.get('/:pid', (req, res) => {
