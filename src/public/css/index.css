@@ -136,3 +136,9 @@ h1 {
         justify-content: center;
     }
 }
+.error{
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    text-decoration: underline rgb(245, 97, 97);
+}

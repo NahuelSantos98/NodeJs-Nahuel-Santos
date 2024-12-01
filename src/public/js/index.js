@@ -1,10 +1,10 @@
-const socket = io()
-
+const socket = io();
 
 document.addEventListener('DOMContentLoaded', () => {
     const productForm = document.getElementById('productForm');
+    const productContainer = document.querySelector('.productCardRealTime-container');
 
-    productForm.addEventListener('submit', async (event) => {
+    productForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
         const title = document.getElementById('title').value;
@@ -14,28 +14,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const stock = parseInt(document.getElementById('stock').value);
         const category = document.getElementById('category').value;
 
-        const newProduct = { title, description, code, price, stock, category };
-
-        try {
-            const response = await fetch('/api/products', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newProduct),
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                alert(`Product added successfully! ID: ${result.data.id}`);
-            } else {
-                const error = await response.json();
-                alert(`Failed to add product: ${error.message}`);
-            }
-        } catch (error) {
-            console.error('Error adding product:', error);
-            alert('An error occurred. Please check the console for details.');
+        if (!title || !description || !code || !price || !stock || !category) {
+            alert('Todos los campos son obligatorios.');
+            return;
         }
+
+        const newProduct = {title, description, code, price, stock, category };
+
+        // Emitir el nuevo producto al servidor
+        socket.emit('createProduct', newProduct);
+
+        productForm.reset();
     });
 
+    // Escuchar actualizaciones de productos
+    socket.on('updateProducts', (products) => {
+        productContainer.innerHTML = '';
+
+        products.forEach((product) => {
+            const productElement = document.createElement('div');
+            productElement.classList.add('productCard');
+            productElement.innerHTML = `
+                <h3>${product.title}</h3>
+                <p>${product.description}</p>
+                <p>Code: ${product.code}</p>
+                <p>Price: $${product.price}</p>
+                <p>Stock: ${product.stock}</p>
+                <p>Category: ${product.category}</p>
+            `;
+            productContainer.appendChild(productElement);
+        });
+    });
 });
