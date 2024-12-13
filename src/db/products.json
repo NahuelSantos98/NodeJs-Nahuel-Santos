@@ -86,5 +86,16 @@
     "stock": 30,
     "category": "Frutas",
     "thumbnails": []
+  },
+  {
+    "id": "80651178-53e4-490f-93d1-b836dd827f94",
+    "title": "Prod2",
+    "description": "Block es una marca de chocolates conocida por su textura cremosa y sabor clásico. Ideal para disfrutar y compartir.",
+    "code": "JBD105",
+    "price": 20,
+    "status": true,
+    "stock": 25,
+    "category": "Golosinas",
+    "thumbnails": []
   }
 ]

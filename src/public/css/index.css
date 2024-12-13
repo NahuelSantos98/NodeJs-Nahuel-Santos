@@ -142,3 +142,19 @@ h1 {
     font-size: 2rem;
     text-decoration: underline rgb(245, 97, 97);
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-link {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.pagination-link:hover {
+    text-decoration: underline;
+}

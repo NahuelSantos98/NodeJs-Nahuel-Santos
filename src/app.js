@@ -8,6 +8,7 @@ import viewsRouter from './routes/views.routes.js';
 import { Server } from 'socket.io';
 import fs from 'fs/promises';
 import Product from './entity/Product.js';
+import connectionDataBase from './utils/connectDB.js';
 
 const app = express();
 const PORT = 8080;
@@ -15,6 +16,7 @@ const hdbs = create();
 
 const httpServer = app.listen(PORT, () => {
     console.log(`Server listening on port http://localhost:${PORT}/`);
+    connectionDataBase();
 });
 
 const socketServer = new Server(httpServer);
@@ -30,7 +32,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
-app.use(viewsRouter);
+app.use('/views',viewsRouter);
 
 app.use((req, res) => {
     res.status(404).render('templates/errorPage');
