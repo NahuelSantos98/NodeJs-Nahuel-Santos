@@ -436,6 +436,21 @@ productRouter.post('/', createProduct)
  */
 productRouter.put('/:pid', updateProductById)
 
+/**
+ * @swagger
+ * /api/products/{pid}:
+ *   delete:
+ *     summary: Delete a product by ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: pid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: MongoDB ObjectId of the product
+ *         example: "507f1f77bcf86cd799439011"
+ */
 productRouter.delete('/:pid', deleteProductById)
 
 
