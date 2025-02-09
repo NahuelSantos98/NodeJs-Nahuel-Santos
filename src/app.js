@@ -14,10 +14,18 @@ import corsHandle from './utils/corsHandle.js';
 import swaggerUI from 'swagger-ui-express';
 import swaggerConfig from './swagger/swagger.js';
 import { errorHandler } from './middlewares/error.middleware.js';
+import initializePassport from './passport/passportConfig.js';
+import passport from 'passport';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv'
+import userRouter from './routes/user.routes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 8080;
 const hdbs = create();
+dotenv.config()
 
 const httpServer = app.listen(PORT, () => {
     console.log(`Server listening on port http://localhost:${PORT}/`);
@@ -32,6 +40,33 @@ app.use(cors({
     origin: corsHandle
 }));
 
+//Session
+app.use(session({ //Maneja las sesiones
+    secret: process.env.COOKIE_KEY,
+    store: MongoStore.create({
+        mongoUrl: process.env.URL_DB,
+        ttl: 60 * 60,
+        crypto:{
+            secret: process.env.COOKIE_KEY
+        }
+    }),
+    cookie: { 
+        maxAge: 60 * 60 * 1000, 
+        httpOnly: true,
+    },
+    resave: true,
+    saveUninitialized: true, 
+}));
+
+
+//Passport
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
+//Cookie parser
+app.use(cookieParser(process.env.COOKIE_KEY));
+
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerConfig));
 
 app.use(express.urlencoded({ extended: true }));
@@ -45,6 +80,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 app.use('/views',viewsRouter);
+app.use('/api/session', userRouter)
 
 app.use(errorHandler);
 

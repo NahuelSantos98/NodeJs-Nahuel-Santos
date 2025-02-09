@@ -1,5 +1,4 @@
 import {Schema, model} from 'mongoose'
-import { text } from 'node:stream/consumers';
 
 const productSchema = new Schema({
     title: {
