@@ -19,8 +19,6 @@ viewsRouter.get('/products', renderProducts)
 
 viewsRouter.get('/products/:pid', renderProductDetail)
 
-
-
 viewsRouter.get('/carts/:cid', renderCart)
 
 

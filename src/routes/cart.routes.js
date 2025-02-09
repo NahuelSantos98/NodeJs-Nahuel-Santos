@@ -1,24 +1,24 @@
 import { Router } from "express";
 import {__dirname} from '../path.js'
-import { addProductToCart, createCart, getCartById, removeProductFromCart, removeAllProductsFromCart, getAllCarts, modifyQuantity, updateProductsCart } from "../controllers/cart.controller.js";
+import {cartController} from "../controllers/cart.controller.js";
 
 const cartRouter = Router()
 
-cartRouter.post('/', createCart)
+cartRouter.post('/', cartController.createCart)
 
-cartRouter.get('/:cid', getCartById)
+cartRouter.get('/:cid', cartController.getCartById)
 
-cartRouter.get('/', getAllCarts)
+cartRouter.get('/', cartController.getAllCarts)
 
-cartRouter.post('/:cid/product/:pid', addProductToCart);
+cartRouter.post('/:cid/product/:pid', cartController.addProductToCart);
 
-cartRouter.put('/:cid', updateProductsCart)
+cartRouter.put('/:cid', cartController.updateProductsCart)
 
-cartRouter.put('/:cid/product/:pid', modifyQuantity)
+cartRouter.put('/:cid/product/:pid', cartController.modifyQuantity)
 
-cartRouter.delete('/:cid/product/:pid', removeProductFromCart)
+cartRouter.delete('/:cid/product/:pid', cartController.removeProductFromCart)
 
-cartRouter.delete('/:cid', removeAllProductsFromCart)
+cartRouter.delete('/:cid', cartController.removeAllProductsFromCart)
 
 
 export default cartRouter;

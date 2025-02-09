@@ -13,6 +13,7 @@ import cors from 'cors'
 import corsHandle from './utils/corsHandle.js';
 import swaggerUI from 'swagger-ui-express';
 import swaggerConfig from './swagger/swagger.js';
+import { errorHandler } from './middlewares/error.middleware.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 8080;
@@ -45,9 +46,7 @@ app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 app.use('/views',viewsRouter);
 
-app.use((req, res) => {
-    res.status(404).render('templates/errorPage');
-});
+app.use(errorHandler);
 
 const productsPath = path.resolve(__dirname, 'db/products.json');
 let products = JSON.parse(await fs.readFile(productsPath, 'utf-8'));

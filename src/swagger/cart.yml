@@ -67,6 +67,30 @@ tags:
 
 paths:
   /api/carts:
+    get:
+      summary: Get all carts (Only for testing)
+      tags: [Cart]
+      responses:
+        200:
+          description: Carts retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SimpleCart'
+                  message:
+                    type: string
+                    example: Carts obtained successfully
+        500:
+          description: Internal server error
+
     post:
       summary: Create a new cart
       tags: [Cart]
@@ -142,84 +166,6 @@ paths:
         500:
           description: Internal server error
 
-  /api/carts:
-    get:
-      summary: Get all carts (Only for testing)
-      tags: [Cart]
-      responses:
-        200:
-          description: Carts retrieved successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  payload:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/SimpleCart'
-                  message:
-                    type: string
-                    example: Carts obtained successfully
-        500:
-          description: Internal server error
-
-  /api/carts/{cid}/product/{pid}:
-    post:
-      summary: Add a product to cart or update its quantity
-      tags: [Cart]
-      parameters:
-        - in: path
-          name: cid
-          required: true
-          schema:
-            type: string
-          description: Cart ID
-        - in: path
-          name: pid
-          required: true
-          schema:
-            type: string
-          description: Product ID
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - quantity
-              properties:
-                quantity:
-                  type: number
-                  example: 2
-      responses:
-        200:
-          description: Product added/updated successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    type: string
-                    example: Cart updated successfully
-                  payload:
-                    $ref: '#/components/schemas/PopulatedCart'
-        400:
-          description: Invalid request
-        404:
-          description: Cart or product not found
-        500:
-          description: Internal server error
-
-  /api/carts/{cid}:
     put:
       summary: Update all products in a cart
       tags: [Cart]
@@ -271,100 +217,6 @@ paths:
         500:
           description: Internal server error
 
-  /api/carts/{cid}/product/{pid}:
-    put:
-      summary: Modify the quantity of a specific product in cart
-      tags: [Cart]
-      parameters:
-        - in: path
-          name: cid
-          required: true
-          schema:
-            type: string
-          description: Cart ID
-        - in: path
-          name: pid
-          required: true
-          schema:
-            type: string
-          description: Product ID
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - quantity
-              properties:
-                quantity:
-                  type: number
-                  description: New quantity for the product
-                  example: 5
-      responses:
-        200:
-          description: Product quantity updated successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    type: string
-                    example: "Product quantity updated successfully"
-                  payload:
-                    $ref: '#/components/schemas/PopulatedCart'
-        400:
-          description: Invalid request
-        404:
-          description: Cart or product not found
-        500:
-          description: Internal server error
-
-  /api/carts/{cid}/product/{pid}:
-    delete:
-      summary: Remove a product from cart
-      tags: [Cart]
-      parameters:
-        - in: path
-          name: cid
-          required: true
-          schema:
-            type: string
-          description: Cart ID
-        - in: path
-          name: pid
-          required: true
-          schema:
-            type: string
-          description: Product ID
-      responses:
-        200:
-          description: Product removed successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  payload:
-                    $ref: '#/components/schemas/SimpleCart'
-                  message:
-                    type: string
-                    example: "The product has been removed"
-        400:
-          description: Invalid request
-        404:
-          description: Cart or product not found
-        500:
-          description: Internal server error
-
-  /api/carts/{cid}:
     delete:
       summary: Remove all products from cart
       tags: [Cart]
@@ -397,3 +249,148 @@ paths:
           description: Cart not found
         500:
           description: Internal server error
+
+
+
+/api/carts/{cid}/product/{pid}:
+  post:
+    summary: Add a product to cart or update its quantity
+    tags: [Cart]
+    parameters:
+      - in: path
+        name: cid
+        required: true
+        schema:
+          type: string
+        description: Cart ID
+      - in: path
+        name: pid
+        required: true
+        schema:
+          type: string
+        description: Product ID
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - quantity
+            properties:
+              quantity:
+                type: number
+                example: 2
+    responses:
+      200:
+        description: Product added/updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: success
+                message:
+                  type: string
+                  example: Cart updated successfully
+                payload:
+                  $ref: '#/components/schemas/PopulatedCart'
+      400:
+        description: Invalid request
+      404:
+        description: Cart or product not found
+      500:
+        description: Internal server error
+
+  put:
+    summary: Modify the quantity of a specific product in cart
+    tags: [Cart]
+    parameters:
+      - in: path
+        name: cid
+        required: true
+        schema:
+          type: string
+        description: Cart ID
+      - in: path
+        name: pid
+        required: true
+        schema:
+          type: string
+        description: Product ID
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - quantity
+            properties:
+              quantity:
+                type: number
+                description: New quantity for the product
+                example: 5
+    responses:
+      200:
+        description: Product quantity updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: success
+                message:
+                  type: string
+                  example: "Product quantity updated successfully"
+                payload:
+                  $ref: '#/components/schemas/PopulatedCart'
+      400:
+        description: Invalid request
+      404:
+        description: Cart or product not found
+      500:
+        description: Internal server error
+
+  delete:
+    summary: Remove a product from cart
+    tags: [Cart]
+    parameters:
+      - in: path
+        name: cid
+        required: true
+        schema:
+          type: string
+        description: Cart ID
+      - in: path
+        name: pid
+        required: true
+        schema:
+          type: string
+        description: Product ID
+    responses:
+      200:
+        description: Product removed successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: success
+                payload:
+                  $ref: '#/components/schemas/SimpleCart'
+                message:
+                  type: string
+                  example: "The product has been removed"
+      400:
+        description: Invalid request
+      404:
+        description: Cart or product not found
+      500:
+        description: Internal server error
