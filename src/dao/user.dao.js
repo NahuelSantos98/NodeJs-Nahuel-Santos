@@ -1,5 +1,8 @@
 import MongoDao from './mongo.dao.js';
 import userModel from '../models/user.model.js';
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 class UserDao extends MongoDao {
     constructor() {
@@ -15,13 +18,15 @@ class UserDao extends MongoDao {
         }
     }
 
-    async getById(id){
+    async getById(id) {
         try {
             return await this.model.findById(id);
         } catch (error) {
             throw new Error("Error while obtaining the user")
         }
     }
+
+
 }
 
 export const userDao = new UserDao();

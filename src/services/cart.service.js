@@ -25,6 +25,16 @@ class CartService {
         }
     }
 
+    async createCartForRegister(){
+        try {
+            const response = await this.dao.createCartForRegister();
+            if (!response) throw new Error("Cart not created"); 
+            return response;
+        } catch (error) {
+            throw new Error("Error creating cart: " + error.message);
+        }
+    }
+
     async getCartById(cartId) {
         try {
             const response = await this.dao.getCartByIdPopulated(cartId);

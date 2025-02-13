@@ -22,6 +22,14 @@ class CartDao extends MongoDao {
         }
     }
 
+    async createCartForRegister() {
+        try {
+            return await this.model.create({ products: [] });
+        } catch (e) {
+            throw new Error("Error creating cart");
+        }
+    }
+
     async getCartByIdPopulated(cartId) {
         try {
             return await this.model.findOne({ _id: cartId });

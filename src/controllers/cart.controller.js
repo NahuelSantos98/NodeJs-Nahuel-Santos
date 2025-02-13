@@ -32,13 +32,27 @@ class CartController {
                 return res.status(400).json({ status: "error", message: "All fields are required." })
             }
     
-            const response = await cartModel.create(body)
+            const response = await this.service.createCart(body)
             res.status(201).json({ status: "success", payload: response, message: `Cart created successfully with id: ${response._id}` })
         } catch (e) {
             console.error('An error occurred createCart', e);
             next(e)
         }
     }
+
+    async createCartForRegister() {
+        try {
+            const newCart = await this.service.createCartForRegister(); // Usamos el servicio
+            if (!newCart) {
+                return null;  // Si no se creó el carrito, devolvemos null
+            }
+            return newCart;  // Si el carrito se crea, devolvemos el carrito
+        } catch (e) {
+            console.error('An error occurred in createCartForRegister', e);
+            return null;  // En caso de error, devolvemos null
+        }
+    }
+    
 
     async getCartById(req, res, next) {
         try {

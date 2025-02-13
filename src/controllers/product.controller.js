@@ -10,7 +10,6 @@ class ProductController {
         this.createProduct = this.createProduct.bind(this);
         this.updateProductById = this.updateProductById.bind(this);
         this.deleteProductById = this.deleteProductById.bind(this);
-
     }
 
     async getAllFiltered(req, res, next) {

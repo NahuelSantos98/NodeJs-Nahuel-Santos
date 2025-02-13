@@ -21,11 +21,17 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    cart: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'carts'
+    },
     role: {
         type: String,
         default: "user",
     }
 });
+
 
 const userModel = model("users", UserSchema);
 
