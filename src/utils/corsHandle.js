@@ -1,7 +1,7 @@
 const corsHandle = (origin, callback) => {
     const ACCEPTED_ORIGINS = [
         'http://localhost:8080',
-        'https://localhost:5173'
+        'http://localhost:5173'
     ];
 
     if (!origin || ACCEPTED_ORIGINS.includes(origin)) {

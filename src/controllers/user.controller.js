@@ -20,9 +20,8 @@ class UserController {
     async login(req, res, next) {
         try {
             const token = await this.service.login(req.body);
-            res
-                .cookie('jwt', token, { httpOnly: true }) //HttpOnly para mas seguridad de la cookie
-                .json({ message: 'Logged in', token });
+            res.cookie('jwt', token, { httpOnly: true }).json({ message: 'Logged in', token });
+            //HttpOnly para mas seguridad de la cookie
         } catch (error) {
             next(error);
         }

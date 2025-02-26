@@ -42,7 +42,7 @@ class UserService {
         return jwt.sign(payload, process.env.COOKIE_KEY, { expiresIn: "30m" });
     }
 
-    async registerStrategyLocal({ first_name, last_name, email, age, password }) {
+    async registerStrategyLocal({ first_name, last_name, email, age, password, role }) {
         try {
             let userExists = await this.dao.getByEmail(email);
             if (userExists) throw new Error('Email already in use.');
@@ -59,6 +59,7 @@ class UserService {
                 email,
                 age,
                 password: createHash(password),
+                role: role ? role.toUpperCase() : "USER",
                 cart: cartForUser._id
             };
 

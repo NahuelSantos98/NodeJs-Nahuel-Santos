@@ -3,15 +3,23 @@ import {  productController } from "../controllers/product.controller.js";
 
 const productRouter = Router();
 
+productRouter.route('/')
+    .get(productController.getAllFiltered)
+    .post(productController.createProduct)
 
-productRouter.get('/', productController.getAllFiltered);
+productRouter.route('/:pid')
+    .get(productController.getProductById)
+    .put(productController.updateProductById)
+    .delete(productController.deleteProductById)
 
-productRouter.get('/:pid', productController.getProductById)
+    productRouter.param('pid', (req, res, next, pid)=>{
+        if(pid) return next()
+        return res.status(400).json({status: "Error",message: "Invalid id"})
+    })
 
-productRouter.post('/', productController.createProduct)
+productRouter.get('*', (req, res)=>{
+    res.status(404).json({status: 'error', message: 'No request for this endpoint for Product'})
+})
 
-productRouter.put('/:pid', productController.updateProductById)
-
-productRouter.delete('/:pid', productController.deleteProductById)
 
 export default productRouter;

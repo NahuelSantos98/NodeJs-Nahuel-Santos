@@ -1,11 +1,10 @@
 import { mongoose } from "mongoose";
-import dotenv from 'dotenv';
+import env from '../utils/envVariables.js'
 
-dotenv.config();
 
 const connectionDataBase = async () => {
     try {
-        await mongoose.connect(process.env.URL_DB);
+        await mongoose.connect(env.db);
         console.log("BDD conectada");
     } catch (e) {
         console.log("Error al conectar con bdd: ", e);

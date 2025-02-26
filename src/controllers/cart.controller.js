@@ -62,7 +62,7 @@ class CartController {
                 return res.status(400).json({ status: "error", error: "The id is undefined", message: "The Cart id must be provided" })
             }
     
-            const cartFound = await cartModel.findOne({_id: cartId});
+            const cartFound = await this.service.getCartById(cartId)
     
             if (!cartFound) {
                 return res.status(404).json({ status: "error", error: `Cart with id: ${cartId} not found`, message: `Cart with id: ${cartId} not found` })

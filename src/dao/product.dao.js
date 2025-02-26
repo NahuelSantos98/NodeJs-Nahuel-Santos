@@ -24,29 +24,35 @@ class ProductDao extends MongoDao {
 
     async getById(id) {
         try {
-            return await this.model.findById(id); 
+            return await this.model.findById(id);
         } catch (error) {
             throw new Error("Error while obtaining the product from de database");
         }
     }
 
-    async createProduct(obj){
+    async createProduct(obj) {
         try {
-            return await this.model.create(obj)
+            const result = await this.model.create(obj);
+            if (!result) {
+                throw new Error("Failed to create product: No response from DB");
+            }
+            return result;
         } catch (error) {
-            throw new Error("Error while creating the product");
+            console.error("Error in DAO: ", error.message);
+            throw new Error(`Error while creating the product: ${error.message}`);
         }
     }
 
-    async updateProductById(id, obj){
+
+    async updateProductById(id, obj) {
         try {
-            return await this.model.findByIdAndUpdate(id, obj, {new: true})
+            return await this.model.findByIdAndUpdate(id, obj, { new: true })
         } catch (error) {
             throw new Error("Error while updating the product");
         }
     }
 
-    async deleteProductById(id){
+    async deleteProductById(id) {
         try {
             return await this.model.findByIdAndDelete(id)
         } catch (error) {
@@ -54,7 +60,7 @@ class ProductDao extends MongoDao {
 
         }
     }
-    
+
 }
 
 export const productDao = new ProductDao();

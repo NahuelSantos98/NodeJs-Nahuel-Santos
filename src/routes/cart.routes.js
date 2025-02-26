@@ -4,21 +4,34 @@ import {cartController} from "../controllers/cart.controller.js";
 
 const cartRouter = Router()
 
-cartRouter.post('/', cartController.createCart)
 
-cartRouter.get('/:cid', cartController.getCartById)
+cartRouter.route('/')
+    .post(cartController.createCart)
+    .get(cartController.getAllCarts)
 
-cartRouter.get('/', cartController.getAllCarts)
+cartRouter.route('/:cid')
+    .get(cartController.getCartById)
+    .put(cartController.updateProductsCart)
+    .delete(cartController.removeAllProductsFromCart)
 
-cartRouter.post('/:cid/product/:pid', cartController.addProductToCart);
+cartRouter.route('/:cid/product/:pid')
+    .post(cartController.addProductToCart)
+    .put(cartController.modifyQuantity)
+    .delete(cartController.removeProductFromCart)
 
-cartRouter.put('/:cid', cartController.updateProductsCart)
+    cartRouter.param('cid', (req, res, next, cid)=>{
+        if(cid) return next()
+        return res.status(400).json({status: "Error",message: "Invalid Cart id"})
+    })
 
-cartRouter.put('/:cid/product/:pid', cartController.modifyQuantity)
+    cartRouter.param('cid', (req, res, next, pid)=>{
+        if(pid) return next()
+        return res.status(400).json({status: "Error",message: "Invalid Product id"})
+    })
 
-cartRouter.delete('/:cid/product/:pid', cartController.removeProductFromCart)
 
-cartRouter.delete('/:cid', cartController.removeAllProductsFromCart)
-
+cartRouter.get('*', (req, res)=>{
+    res.status(404).json({status: 'error', message: 'No request for this endpoint for Cart'})
+})
 
 export default cartRouter;

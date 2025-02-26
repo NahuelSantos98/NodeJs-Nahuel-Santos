@@ -3,15 +3,14 @@ import local from 'passport-local';
 import { userService } from '../services/user.service.js';
 import { createHash } from '../utils/configPassword.js';
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
-import dotenv from 'dotenv'
-dotenv.config()
+import env from '../utils/envVariables.js'
 
 const LocalStrategy = local.Strategy;
 
 //Strategy para Headers + JWT
 const strategyJWT = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //Extract del encabezado el jwt Bearer
-    secretOrKey: process.env.COOKIE_KEY, //clave que se usará para verificar la validez del JWT
+    secretOrKey: env.keyCookie, //clave que se usará para verificar la validez del JWT
 };
 
 const verifyToken = async (jwt_payload, done) => { //Verifica el token al momento de recibirse
@@ -32,7 +31,7 @@ const cookieExtractor = (req) => {
 //Strategy para cookies + JWT
 const strategyCookiesConfig = {
     jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-    secretOrKey: process.env.COOKIE_KEY,
+    secretOrKey: env.keyCookie,
 };
 
 passport.use('jwtCookies', new JwtStrategy(strategyCookiesConfig, verifyToken));

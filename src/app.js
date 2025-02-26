@@ -1,10 +1,7 @@
 import express from 'express';
-import productRouter from './routes/producto.routes.js';
-import cartRouter from './routes/cart.routes.js';
 import { create } from 'express-handlebars';
 import path from 'path';
 import { __dirname } from './path.js';
-import viewsRouter from './routes/views.routes.js';
 import { Server } from 'socket.io';
 import fs from 'fs/promises';
 import Product from './entity/Product.js';
@@ -19,13 +16,13 @@ import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv'
-import userRouter from './routes/user.routes.js';
+import router from './routes/index.routes.js';
+import env from './utils/envVariables.js'
+import { userCustomRouter } from './routes/customRouter/user.customRouter.js';
 
 const app = express();
-const PORT = process.env.PORT ?? 8080;
+const PORT = env.port || 8080;
 const hdbs = create();
-dotenv.config()
 
 const httpServer = app.listen(PORT, () => {
     console.log(`Server listening on port http://localhost:${PORT}/`);
@@ -77,10 +74,9 @@ app.set('view engine', 'handlebars');
 
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
-app.use('/api/products', productRouter);
-app.use('/api/carts', cartRouter);
-app.use('/views',viewsRouter);
-app.use('/api/session', userRouter)
+app.use('/api', router);
+app.use('/customRouter', userCustomRouter.getRouter());
+
 
 app.use(errorHandler);
 

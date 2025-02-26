@@ -25,11 +25,11 @@ class ProductController {
     async getProductById(req, res, next) {
         try {
             const prodId = req.params.pid;
-            
+
             if (!prodId) {
                 res.status(400).json("The Product Id must be provided");
             }
-            
+
             const response = await this.service.getProductById(prodId);
             if (!response) {
                 return res.status(404).json({ status: "error", message: `Product not found` });
@@ -40,34 +40,36 @@ class ProductController {
             next(e);
         }
     }
-    
-    async createProduct(req, res, next){
+
+    async createProduct(req, res, next) {
         try {
+            const body = req.body
             if (!body) {
-                res.status(400).json({ status: "error", message: "All body must be provided" })
+                return res.status(400).json({ status: "error", message: "All body must be provided" })
             }
-            
+
             if (!body.title || !body.description || !body.code || !body.price || !body.stock || !body.category) {
-                res.status(400).json({ status: "error", message: "All required fields (title, description, code, price, stock, and category) are required." })
+                return res.status(400).json({ status: "error", message: "All required fields (title, description, code, price, stock, and category) are required." })
             }
 
             if (typeof (body.title) != 'string' || typeof (body.description) != 'string' || typeof (body.code) != 'string' || typeof (body.category) != 'string') {
-                res.status(400).json({ status: "error", message: "The fields title, description, code and category must be a text." })
+                return res.status(400).json({ status: "error", message: "The fields title, description, code and category must be a text." })
             }
 
             if (typeof (body.price) != 'number' || typeof (body.stock) != 'number') {
-                res.status(400).json({ status: "error", message: "The field price and stock must be a number." })
+                return res.status(400).json({ status: "error", message: "The field price and stock must be a number." })
             }
 
             if (body.price < 0 || body.stock < 0) {
-                res.status(400).json({ status: "error", message: "Price and stock must be positive numbers." });
+                return res.status(400).json({ status: "error", message: "Price and stock must be positive numbers." });
             }
 
 
-            const response = await this.service.createProduct(req.body, res)
+            const response = await this.service.createProduct(body, res)
             if (!response) {
-                return res.status(400).json({ status: "error", message: `Product not created` });
+                return res.status(400).json({ status: "error", message: "Product not created, please try again." });
             }
+
             res.status(201).json({ status: "success", payload: response, message: `The product has been created with id: ${response._id}` })
         } catch (e) {
             console.log('Error en ProductController');
@@ -76,7 +78,7 @@ class ProductController {
     }
 
 
-    async updateProductById (req, res, next) {
+    async updateProductById(req, res, next) {
         try {
             let prodId = req.params.pid;
             let updatedProduct = req.body;
@@ -84,51 +86,51 @@ class ProductController {
             if (!prodId) {
                 return res.status(400).json({ status: "error", message: "The Product Id must be provided" });
             }
-    
+
             if (!updatedProduct) {
                 return res.status(400).json({ status: "error", message: "At least one field is required to modify a product" });
             }
-    
+
             if (updatedProduct.title && typeof (updatedProduct.title) !== 'string') return res.status(400).json({ status: "error", message: "The field title must be a text." });
             if (updatedProduct.description && typeof (updatedProduct.description) !== 'string') return res.status(400).json({ status: "error", message: "The field description must be a text." });
             if (updatedProduct.code && typeof (updatedProduct.code) !== 'string') return res.status(400).json({ status: "error", message: "The field code must be a text." });
             if (updatedProduct.category && typeof (updatedProduct.category) !== 'string') return res.status(400).json({ status: "error", message: "The field category must be a text." });
             if (updatedProduct.price && typeof (updatedProduct.price) !== 'number') return res.status(400).json({ status: "error", message: "The field price must be a number." });
             if (updatedProduct.stock && typeof (updatedProduct.stock) !== 'number') return res.status(400).json({ status: "error", message: "The field stock must be a number." });
-    
+
             if (updatedProduct.price < 0 || updatedProduct.stock < 0) {
                 return res.status(400).json({ status: "error", message: "Price and stock must be positive numbers." });
             }
-    
+
             const response = await this.service.updateProductById(prodId, updatedProduct)
-    
+
             if (!response) {
                 return res.status(404).json({ status: "error", message: `Product with id ${prodId} not found` });
             }
-    
+
             res.status(200).json({ status: "success", payload: response, message: `Product with id ${prodId} modified successfully` });
-    
+
         } catch (e) {
             console.log('Error en ProductController');
             next(e)
         }
     };
-    
-    
-    async deleteProductById (req, res, next) {
+
+
+    async deleteProductById(req, res, next) {
         try {
             let prodId = req.params.pid
 
             if (!prodId) {
                 return res.status(400).json({ status: "error", message: "The Product Id must be provided" })
             }
-    
+
             const response = await this.service.deleteProductById(prodId, res)
-    
+
             if (!response) {
                 return res.status(404).json({ status: "error", message: `Product with id ${prodId} not found` });
             }
-    
+
             res.status(200).json({ status: 'success', data: {}, message: `Product with id: ${prodId} has been deleted` })
         } catch (e) {
             console.log('Error en ProductController');
@@ -211,7 +213,7 @@ export const renderProducts = async (req, res, next) => {
     }
 };
 
-export const renderProductDetail = async (req, res, next)=>{
+export const renderProductDetail = async (req, res, next) => {
     try {
         let prodId = req.params.pid
 
@@ -225,7 +227,7 @@ export const renderProductDetail = async (req, res, next)=>{
             return res.status(404).json({ status: "error", message: `Product with id: ${prodId} not found` })
         }
 
-        res.status(200).render('templates/productDetail',{response});
+        res.status(200).render('templates/productDetail', { response });
     } catch (e) {
         next(e)
     }

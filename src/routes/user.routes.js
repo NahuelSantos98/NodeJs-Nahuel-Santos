@@ -36,4 +36,9 @@ userRouter.get('/verifyWho', passport.authenticate('jwt', { session: false }), (
     }
 });
 
+userRouter.get('*', (req, res)=>{
+    res.status(404).json({status: 'error', message: 'No request for this endpoint for User'})
+})
+
+
 export default userRouter;

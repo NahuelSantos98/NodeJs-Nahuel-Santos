@@ -1,8 +1,5 @@
 import MongoDao from './mongo.dao.js';
 import userModel from '../models/user.model.js';
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 class UserDao extends MongoDao {
     constructor() {
