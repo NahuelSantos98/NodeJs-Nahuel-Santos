@@ -38,6 +38,14 @@ class UserController {
             next(error);
         }
     }
+
+    async logout(req, res, next) {
+        try {
+            res.clearCookie('jwt').json({ message: 'Logged out' });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export const userController = new UserController(userService);

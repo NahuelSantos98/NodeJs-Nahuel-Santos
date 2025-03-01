@@ -17,8 +17,8 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import router from './routes/index.routes.js';
+import customRouter from './routes/customRouter/index.customRouter.js';
 import env from './utils/envVariables.js'
-import { userCustomRouter } from './routes/customRouter/user.customRouter.js';
 
 const app = express();
 const PORT = env.port || 8080;
@@ -75,7 +75,7 @@ app.set('view engine', 'handlebars');
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.use('/api', router);
-app.use('/customRouter', userCustomRouter.getRouter());
+app.use('/custom', customRouter);
 
 
 app.use(errorHandler);

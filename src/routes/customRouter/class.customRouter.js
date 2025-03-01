@@ -46,13 +46,13 @@ export default class Router {
         });
     }
 
-    managerRoles(roles) { //Recibe array de roles
+    managerRoles(roles) {
         return (req, res, next) => {
-            try {
-                if (roles.includes("PUBLIC")) return next() //Si el rol incluye public que siga adelante...
-
+            try {    
+                if (roles.includes("PUBLIC")) return next(); // Si es pública, pasa directamente.
+    
                 let token;
-
+    
                 // 1. Intentar obtener el token desde cookies
                 if (req.cookies && req.cookies.jwt) {
                     token = req.cookies.jwt;
@@ -61,26 +61,31 @@ export default class Router {
                 else if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
                     token = req.headers.authorization.split(" ")[1]; // Extraer token después de "Bearer"
                 }
-
+    
                 if (!token) {
                     return res.status(401).json({ message: "Unauthorized: No token provided" });
                 }
-
+    
                 // 3. Verificar y decodificar el token
                 const user = jwt.verify(token, env.keyCookie); // Verificar el token con la clave secreta
-                
-
+                console.log("Usuario autenticado:", user);
+    
                 // 4. Verificar si el usuario tiene al menos uno de los roles requeridos
-                if (!roles.includes(user.role.toUpperCase())) {
-                    return res.status(401).json({ status: "error",message: "Unauthorized" });
+                const userRole = user.role.toUpperCase(); // Asegurar mayúsculas
+                console.log("Rol del usuario:", userRole);
+    
+                if (!roles.includes(userRole)) {
+                    return res.status(403).json({ status: "error", message: "Unauthorized: Insufficient role" });
                 }
-
+    
                 req.user = user; // Guardar la info del usuario en req.user
-
+    
                 next(); // Pasar al siguiente middleware
             } catch (error) {
-                next(error)
+                console.error("Error en autenticación:", error);
+                res.status(401).json({ message: "Invalid token" });
             }
-        }
+        };
     }
+    
 }

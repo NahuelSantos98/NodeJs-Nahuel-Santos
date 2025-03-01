@@ -47,7 +47,7 @@ class ProductController {
             if (!body) {
                 return res.status(400).json({ status: "error", message: "All body must be provided" })
             }
-
+            
             if (!body.title || !body.description || !body.code || !body.price || !body.stock || !body.category) {
                 return res.status(400).json({ status: "error", message: "All required fields (title, description, code, price, stock, and category) are required." })
             }
