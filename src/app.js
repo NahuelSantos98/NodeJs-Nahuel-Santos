@@ -5,7 +5,6 @@ import { __dirname } from './path.js';
 import { Server } from 'socket.io';
 import fs from 'fs/promises';
 import Product from './entity/Product.js';
-import connectionDataBase from './utils/connectDB.js';
 import cors from 'cors'
 import corsHandle from './utils/corsHandle.js';
 import swaggerUI from 'swagger-ui-express';
@@ -19,6 +18,7 @@ import cookieParser from 'cookie-parser';
 import router from './routes/index.routes.js';
 import customRouter from './routes/customRouter/index.customRouter.js';
 import env from './utils/envVariables.js'
+import './utils/connectDB.js'
 
 const app = express();
 const PORT = env.port || 8080;
@@ -26,7 +26,6 @@ const hdbs = create();
 
 const httpServer = app.listen(PORT, () => {
     console.log(`Server listening on port http://localhost:${PORT}/`);
-    connectionDataBase();
 });
 
 const socketServer = new Server(httpServer);
