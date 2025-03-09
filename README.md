@@ -19,9 +19,10 @@ The system implements a complete RESTful API that allows for product and shoppin
    ```bash
    npm install
    ```
-3. Create a `.env` file in the root directory and add your MongoDB connection string:
+3. Create a `.env` file in the root directory and add your Database connection string and cookie secret key:
    ```
-   MONGODB_URI=your_mongodb_cluster_connection_string
+   URL_DB=your_mongodb_cluster_connection_string
+   COOKIE_KEY=your_cookie_key
    ```
 4. Start the server:
    ```bash

@@ -40,52 +40,20 @@ class CartDao extends MongoDao {
 
     async getCartById(cartId){
         try {
-            return await this.model.findById({ _id: cartId });
+            return await this.model.findById(cartId);
         } catch (error) {
             throw new Error("Error retrieving cart by id");
         }
     }
 
-    async addProductToCart(cart) {
+    async saveCart(cart) {
         try {
             return await cart.save();
         } catch (e) {
-            throw new Error("Error adding product to cart");
+            throw new Error("Error saving product to cart");
         }
     }
 
-    async updateProductsCart(cart) {
-        try {
-            return await cart.save();
-        } catch (e) {
-            throw new Error("Error updating products in cart");
-        }
-    }
-
-    async modifyQuantity(cart) {
-        try {
-            return await cart.save();
-        } catch (e) {
-            throw new Error("Error modifying product quantity in cart");
-        }
-    }
-
-    async removeProductFromCart(cart) {
-        try {
-            return await cart.save();
-        } catch (e) {
-            throw new Error("Error removing product from cart");
-        }
-    }
-
-    async removeAllProductsFromCart(cart) {
-        try {
-            return await cart.save();
-        } catch (e) {
-            throw new Error("Error removing all products from cart");
-        }
-    }
-    
 }
 
 export const cartDao = new CartDao();

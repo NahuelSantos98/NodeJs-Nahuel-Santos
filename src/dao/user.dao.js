@@ -14,7 +14,7 @@ class UserDao extends MongoDao {
             throw new Error("Error while obtaining the user");
         }
     }
-
+    
     async getById(id) {
         try {
             return await this.model.findById(id);
@@ -23,6 +23,13 @@ class UserDao extends MongoDao {
         }
     }
 
+    async createUser(user){
+        try {
+            return await this.model.create(user);
+        } catch (error) {
+            throw new Error("Error while creating the user")
+        }
+    }
 
 }
 

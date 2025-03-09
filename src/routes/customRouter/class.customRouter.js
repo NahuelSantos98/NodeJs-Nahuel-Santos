@@ -56,10 +56,13 @@ export default class Router {
                 // 1. Intentar obtener el token desde cookies
                 if (req.cookies && req.cookies.jwt) {
                     token = req.cookies.jwt;
+                    console.log("Token en cookies:", token);
+                    
                 }
                 // 2. Si no está en cookies, intentar obtenerlo del header Authorization (Bearer Token)
                 else if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
                     token = req.headers.authorization.split(" ")[1]; // Extraer token después de "Bearer"
+                    console.log("Token en headers:", token);
                 }
     
                 if (!token) {

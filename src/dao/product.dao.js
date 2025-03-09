@@ -29,6 +29,7 @@ class ProductDao extends MongoDao {
             throw new Error("Error while obtaining the product from de database");
         }
     }
+    
 
     async createProduct(obj) {
         try {

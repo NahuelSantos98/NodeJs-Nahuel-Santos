@@ -15,7 +15,7 @@ class ProductController {
     async getAllFiltered(req, res, next) {
         try {
             let response = await this.service.getAllFiltered(req.query, res);
-            res.status(200).json({ response });
+            res.status(200).json({ payload: response });
         } catch (e) {
             console.log('Error en ProductController');
             next(e);
@@ -70,7 +70,7 @@ class ProductController {
                 return res.status(400).json({ status: "error", message: "Product not created, please try again." });
             }
 
-            res.status(201).json({ status: "success", payload: response, message: `The product has been created with id: ${response._id}` })
+            res.status(201).json({ status: "success", payload: response, message: `The product has been created with id: ${response.id}` })
         } catch (e) {
             console.log('Error en ProductController');
             next(e)

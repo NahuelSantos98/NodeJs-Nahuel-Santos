@@ -1,8 +1,8 @@
-import { productDao } from "../dao/product.dao.js";
+import {productRepository} from "../repository/product.repository.js";
 
 class ProductService {
-    constructor(dao) {
-        this.dao = dao;
+    constructor(repository) {
+        this.repository = repository;
     }
 
     async getAllFiltered(obj,res) {
@@ -41,8 +41,8 @@ class ProductService {
                 limitInt
             };
 
-            const products = await this.dao.getAllFiltered(filters);
-            const totalProducts = await this.dao.countDocuments(filter);
+            const products = await this.repository.getAllFiltered(filters);
+            const totalProducts = await this.repository.countDocuments(filter);
             const totalPages = Math.ceil(totalProducts / limitInt);
 
             const hasPrevPage = pageInt > 1;
@@ -65,17 +65,17 @@ class ProductService {
 
     async getProductById(id) {
         try {
-            const response = await this.dao.getById(id);  // Llamar al DAO para obtener el producto
-            if (!response) throw new Error("Product not found");  // Verificar si no se encontró el producto
-            return response;  // Devolver la respuesta del DAO
+            const response = await this.repository.getProductById(id);
+            if (!response) throw new Error("Product not found");
+            return response;
         } catch (error) {
-            throw new Error(error.message);  // Propagar el error
+            throw new Error(error.message);
         }
     }
 
     async createProduct(body) {
         try {
-            const response = await this.dao.createProduct(body);
+            const response = await this.repository.createProduct(body);
             if (!response) throw new Error("Product not created");
             return response;
         } catch (error) {
@@ -85,7 +85,7 @@ class ProductService {
 
     async updateProductById(id, updatedProduct){
         try {
-            const response = await this.dao.updateProductById(id, updatedProduct)
+            const response = await this.repository.updateProductById(id, updatedProduct)
             if (!response) throw new Error("Product not updated");
             return response
         } catch (error) {
@@ -93,9 +93,9 @@ class ProductService {
         }
     }
 
-    async deleteProductById(id, res){
+    async deleteProductById(id){
         try {
-            const response = this.dao.deleteProductById(id)
+            const response = this.repository.deleteProductById(id)
             if (!response) throw new Error("Product not deleted");
             return response
         } catch (error) {
@@ -104,4 +104,4 @@ class ProductService {
     }
 }
 
-export const productService = new ProductService(productDao);
+export const productService = new ProductService(productRepository);

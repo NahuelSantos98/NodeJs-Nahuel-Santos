@@ -33,7 +33,7 @@ class CartController {
             }
     
             const response = await this.service.createCart(body)
-            res.status(201).json({ status: "success", payload: response, message: `Cart created successfully with id: ${response._id}` })
+            res.status(201).json({ status: "success", payload: response, message: `Cart created successfully with id: ${response.id}` })
         } catch (e) {
             console.error('An error occurred createCart', e);
             next(e)
@@ -199,6 +199,7 @@ class CartController {
             next(e)
         }
     }
+
 }
 
 export const cartController = new CartController(cartService);

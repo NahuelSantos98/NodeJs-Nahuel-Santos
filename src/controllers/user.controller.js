@@ -9,7 +9,7 @@ class UserController {
 
     async registerStrategyLocal(req, res, next) {
         try {
-            const user = await this.service.registerStrategyLocal(req.body, next);
+            const user = await this.service.registerStrategyLocal(req.body);
             res.status(201).json({ status: 'success', payload: user });
         } catch (error) {
             console.error('Error en UserController:', error);
@@ -32,7 +32,7 @@ class UserController {
             if (!req.user)
                 throw new Error("Can not access to user info");
             res.json({
-                user: req.user,
+                user: req.user, //Esta guardado en el req.user dentro del login
             });
         } catch (error) {
             next(error);

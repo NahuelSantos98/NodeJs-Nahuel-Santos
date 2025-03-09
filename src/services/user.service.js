@@ -1,16 +1,16 @@
 import { cartController } from '../controllers/cart.controller.js';
-import { userDao } from '../dao/user.dao.js';
+import {userRepository} from '../repository/user.repository.js'
 import { createHash, isValidPassword } from '../utils/configPassword.js';
 import jwt from 'jsonwebtoken';
 
 class UserService {
-    constructor(dao) {
-        this.dao = dao;
+    constructor(repository) {
+        this.repository = repository;
     }
 
     async getByEmail(email) {
         try {
-            let response = await this.dao.getByEmail(email);
+            let response = await this.repository.getByEmail(email);
             if (!response) throw new Error("User not found");
             return response
         } catch (error) {
@@ -21,7 +21,7 @@ class UserService {
 
     async getById(id) {
         try {
-            let response = await this.dao.getById(id)
+            let response = await this.repository.getById(id)
             if (!response) throw new Error("User not found");
             return response
         } catch (error) {
@@ -44,15 +44,15 @@ class UserService {
 
     async registerStrategyLocal({ first_name, last_name, email, age, password, role }) {
         try {
-            let userExists = await this.dao.getByEmail(email);
+            let userExists = await this.repository.getByEmail(email);
+            
             if (userExists) throw new Error('Email already in use.');
 
-            let cartForUser = await cartController.createCartForRegister()
-
+            let cartForUser = await cartController.createCartForRegister()            
             if (!cartForUser) {
                 throw new Error('Cart can not be created for this user.')
             }
-
+            
             const newUser = {
                 first_name,
                 last_name,
@@ -60,10 +60,9 @@ class UserService {
                 age,
                 password: createHash(password),
                 role: role ? role.toUpperCase() : "USER",
-                cart: cartForUser._id
+                cart: cartForUser.id
             };
-
-            return await this.dao.create(newUser);
+            return await this.repository.createUser(newUser);
         } catch (error) {
             console.error('Error in register user service:', error);
             throw new Error(error.message);
@@ -88,4 +87,4 @@ class UserService {
 
 }
 
-export const userService = new UserService(userDao);
+export const userService = new UserService(userRepository);

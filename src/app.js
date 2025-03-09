@@ -2,9 +2,6 @@ import express from 'express';
 import { create } from 'express-handlebars';
 import path from 'path';
 import { __dirname } from './path.js';
-import { Server } from 'socket.io';
-import fs from 'fs/promises';
-import Product from './entity/Product.js';
 import cors from 'cors'
 import corsHandle from './utils/corsHandle.js';
 import swaggerUI from 'swagger-ui-express';
@@ -12,37 +9,36 @@ import swaggerConfig from './swagger/swagger.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 import initializePassport from './passport/passportConfig.js';
 import passport from 'passport';
+import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
-import cookieParser from 'cookie-parser';
-import router from './routes/index.routes.js';
+import router from './routes/publicRouter/index.routes.js';
 import customRouter from './routes/customRouter/index.customRouter.js';
 import env from './utils/envVariables.js'
 import './utils/connectDB.js'
 
 const app = express();
-const PORT = env.port || 8080;
+const PORT = env.port || 8000;
 const hdbs = create();
 
-const httpServer = app.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server listening on port http://localhost:${PORT}/`);
 });
-
-const socketServer = new Server(httpServer);
 
 app.use(express.json());
 
 app.use(cors({
-    origin: corsHandle
+    origin: corsHandle,
+    credentials: true
 }));
 
-//Session
-app.use(session({ //Maneja las sesiones
+//Session se necesita para autenticación.
+app.use(session({
     secret: process.env.COOKIE_KEY,
     store: MongoStore.create({
         mongoUrl: process.env.URL_DB,
         ttl: 60 * 60,
-        crypto:{
+        crypto: {
             secret: process.env.COOKIE_KEY
         }
     }),
@@ -50,12 +46,11 @@ app.use(session({ //Maneja las sesiones
         maxAge: 60 * 60 * 1000, 
         httpOnly: true,
     },
-    resave: true,
-    saveUninitialized: true, 
+    resave: false,
+    saveUninitialized: false, 
 }));
 
-
-//Passport
+//Passport = para registrarse
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
@@ -78,22 +73,4 @@ app.use('/custom', customRouter);
 
 
 app.use(errorHandler);
-
-const productsPath = path.resolve(__dirname, 'db/products.json');
-let products = JSON.parse(await fs.readFile(productsPath, 'utf-8'));
-
-socketServer.on('connection', (socket) => {
-    console.log(`Conexión id: ${socket.id}`);
-    socket.emit('updateProducts', products); //Productos iniciales al conectarse
-    socket.on('createProduct', async (data) => { //Escucha creacion del producto
-        const productWithId = new Product(data)
-        products.push(productWithId);
-        await fs.writeFile(productsPath, JSON.stringify(products, null, 2)); 
-        socketServer.emit('updateProducts', products); //Productos actualizados
-        console.log('Product created with id:',productWithId.id);
-    });
-    socket.on('disconnect', () => {
-        console.log('User desconectado, ID:', socket.id);
-    });
-});
 

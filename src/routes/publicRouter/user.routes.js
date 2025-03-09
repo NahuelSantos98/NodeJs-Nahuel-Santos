@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { userController } from '../controllers/user.controller.js';
+import { userController } from '../../controllers/user.controller.js';
 import passport from 'passport';
-import { passportCall } from '../middlewares/passportCall.middleware.js';
+import { passportCall } from '../../middlewares/passportCall.middleware.js';
 
 const userRouter = Router();
 

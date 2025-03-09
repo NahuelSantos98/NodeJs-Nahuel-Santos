@@ -1,6 +1,6 @@
 import { Router } from "express";
-import {__dirname} from '../path.js'
-import {cartController} from "../controllers/cart.controller.js";
+import {__dirname} from '../../path.js'
+import {cartController} from "../../controllers/cart.controller.js";
 
 const cartRouter = Router()
 
