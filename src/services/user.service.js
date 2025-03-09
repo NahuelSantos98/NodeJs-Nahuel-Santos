@@ -25,13 +25,12 @@ class UserService {
             if (!response) throw new Error("User not found");
             return response
         } catch (error) {
-            console.log('Error getById service');
             throw new Error(error.message);
         }
     }
 
     async generateToken(user) {
-        const payload = { //Setea campos que se van a guardar.
+        const payload = { //Setea campos que se van a guardar. NO GUARDAMOS DATOS SENSIBLES
             first_name: user.first_name,
             last_name: user.last_name,
             email: user.email,
@@ -64,8 +63,7 @@ class UserService {
             };
             return await this.repository.createUser(newUser);
         } catch (error) {
-            console.error('Error in register user service:', error);
-            throw new Error(error.message);
+            throw new Error(error);
         }
     }
 
@@ -81,9 +79,17 @@ class UserService {
             if (!isPswValid) throw new Error("Invalid fields");
             return this.generateToken(userExist);
         } catch (error) {
-            throw error;
+            throw new Error(error);
         }
     };
+
+    async validationUserWithInfo(user){
+        try {
+            return this.repository.validationUserWithInfo(user)
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 
 }
 

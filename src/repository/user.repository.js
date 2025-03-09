@@ -35,6 +35,14 @@ class UserRepository{
         }
     }
 
+    async validationUserWithInfo(user){
+        try {
+            return new UserOutputDTO(user) //Se devuelve el DTO, aunque ya en la misma cookie NO le pongo los datos sensibles
+        } catch (e) {
+            throw new Error(e)
+        }
+    }
+
 }
 
 export const userRepository = new UserRepository(userDao)

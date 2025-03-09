@@ -5,6 +5,8 @@ class UserController {
         this.service = service;
         this.registerStrategyLocal = this.registerStrategyLocal.bind(this);
         this.login = this.login.bind(this)
+        this.logout = this.logout.bind(this)
+        this.validationUserWithInfo = this.validationUserWithInfo.bind(this)
     }
 
     async registerStrategyLocal(req, res, next) {
@@ -31,9 +33,12 @@ class UserController {
         try {
             if (!req.user)
                 throw new Error("Can not access to user info");
-            res.json({
-                user: req.user, //Esta guardado en el req.user dentro del login
-            });
+            console.log(req.user);
+            
+
+            let response = await this.service.validationUserWithInfo(req.user)
+            if(!response) res.status(404).json({status:"Error", message: "User not validated"})
+            res.json({user: response});
         } catch (error) {
             next(error);
         }
