@@ -44,28 +44,9 @@ class ProductController {
     async createProduct(req, res, next) {
         try {
             const body = req.body
-            if (!body) {
-                return res.status(400).json({ status: "error", message: "All body must be provided" })
-            }
-            
-            if (!body.title || !body.description || !body.code || !body.price || !body.stock || !body.category) {
-                return res.status(400).json({ status: "error", message: "All required fields (title, description, code, price, stock, and category) are required." })
-            }
-
-            if (typeof (body.title) != 'string' || typeof (body.description) != 'string' || typeof (body.code) != 'string' || typeof (body.category) != 'string') {
-                return res.status(400).json({ status: "error", message: "The fields title, description, code and category must be a text." })
-            }
-
-            if (typeof (body.price) != 'number' || typeof (body.stock) != 'number') {
-                return res.status(400).json({ status: "error", message: "The field price and stock must be a number." })
-            }
-
-            if (body.price < 0 || body.stock < 0) {
-                return res.status(400).json({ status: "error", message: "Price and stock must be positive numbers." });
-            }
-
 
             const response = await this.service.createProduct(body, res)
+
             if (!response) {
                 return res.status(400).json({ status: "error", message: "Product not created, please try again." });
             }
@@ -86,22 +67,7 @@ class ProductController {
             if (!prodId) {
                 return res.status(400).json({ status: "error", message: "The Product Id must be provided" });
             }
-
-            if (!updatedProduct) {
-                return res.status(400).json({ status: "error", message: "At least one field is required to modify a product" });
-            }
-
-            if (updatedProduct.title && typeof (updatedProduct.title) !== 'string') return res.status(400).json({ status: "error", message: "The field title must be a text." });
-            if (updatedProduct.description && typeof (updatedProduct.description) !== 'string') return res.status(400).json({ status: "error", message: "The field description must be a text." });
-            if (updatedProduct.code && typeof (updatedProduct.code) !== 'string') return res.status(400).json({ status: "error", message: "The field code must be a text." });
-            if (updatedProduct.category && typeof (updatedProduct.category) !== 'string') return res.status(400).json({ status: "error", message: "The field category must be a text." });
-            if (updatedProduct.price && typeof (updatedProduct.price) !== 'number') return res.status(400).json({ status: "error", message: "The field price must be a number." });
-            if (updatedProduct.stock && typeof (updatedProduct.stock) !== 'number') return res.status(400).json({ status: "error", message: "The field stock must be a number." });
-
-            if (updatedProduct.price < 0 || updatedProduct.stock < 0) {
-                return res.status(400).json({ status: "error", message: "Price and stock must be positive numbers." });
-            }
-
+            
             const response = await this.service.updateProductById(prodId, updatedProduct)
 
             if (!response) {

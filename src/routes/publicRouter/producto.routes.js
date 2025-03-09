@@ -1,15 +1,16 @@
 import { Router } from "express";
 import {  productController } from "../../controllers/product.controller.js";
+import { validateProduct, validateUpdateProduct } from "../../middlewares/productValidator.js";
 
 const productRouter = Router();
 
-productRouter.route('/')
+(productRouter.route('/')
     .get(productController.getAllFiltered)
-    .post(productController.createProduct)
+    .post( [validateProduct()], productController.createProduct))
 
 productRouter.route('/:pid')
     .get(productController.getProductById)
-    .put(productController.updateProductById)
+    .put([validateUpdateProduct()],productController.updateProductById)
     .delete(productController.deleteProductById)
 
     productRouter.param('pid', (req, res, next, pid)=>{
