@@ -23,7 +23,6 @@ class UserController {
         try {
             const token = await this.service.login(req.body);
             res.cookie('jwt', token, { httpOnly: true }).json({ message: 'Logged in', token });
-            //HttpOnly para mas seguridad de la cookie
         } catch (error) {
             next(error);
         }
@@ -38,7 +37,8 @@ class UserController {
 
             let response = await this.service.validationUserWithInfo(req.user)
             if(!response) res.status(404).json({status:"Error", message: "User not validated"})
-            res.json({user: response});
+            
+                res.json({user: response});
         } catch (error) {
             next(error);
         }

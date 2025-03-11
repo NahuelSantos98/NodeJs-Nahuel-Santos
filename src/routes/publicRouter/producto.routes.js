@@ -1,17 +1,19 @@
 import { Router } from "express";
 import {  productController } from "../../controllers/product.controller.js";
 import { validateProduct, validateUpdateProduct } from "../../middlewares/productValidator.js";
+import {roleAuth} from '../../middlewares/roleAuth.middleware.js'
+import { passportCall } from "../../middlewares/passportCall.middleware.js";
 
 const productRouter = Router();
 
 (productRouter.route('/')
-    .get(productController.getAllFiltered)
-    .post( [validateProduct()], productController.createProduct))
+    .get( productController.getAllFiltered)
+    .post(passportCall('jwt'), [validateProduct()], roleAuth(['ADMIN']),productController.createProduct))
 
 productRouter.route('/:pid')
     .get(productController.getProductById)
-    .put([validateUpdateProduct()],productController.updateProductById)
-    .delete(productController.deleteProductById)
+    .put(passportCall('jwt'), [validateUpdateProduct()], roleAuth(['ADMIN']),productController.updateProductById)
+    .delete(passportCall('jwt'), roleAuth(['ADMIN']),productController.deleteProductById)
 
     productRouter.param('pid', (req, res, next, pid)=>{
         if(pid) return next()

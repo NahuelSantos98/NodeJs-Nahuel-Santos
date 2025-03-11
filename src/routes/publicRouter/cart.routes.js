@@ -1,30 +1,31 @@
 import { Router } from "express";
 import {__dirname} from '../../path.js'
 import {cartController} from "../../controllers/cart.controller.js";
+import { roleAuth } from "../../middlewares/roleAuth.middleware.js";
+import {passportCall} from '../../middlewares/passportCall.middleware.js'
 
 const cartRouter = Router()
 
-
 cartRouter.route('/')
     .post(cartController.createCart)
-    .get(cartController.getAllCarts)
+    .get(passportCall('jwt'), roleAuth(['ADMIN']),cartController.getAllCarts)  //Usar passportCall para autenticar y asignar req.user
 
 cartRouter.route('/:cid')
-    .get(cartController.getCartById)
-    .put(cartController.updateProductsCart)
-    .delete(cartController.removeAllProductsFromCart)
+    .get(passportCall('jwt'), roleAuth(['USER']),cartController.getCartById)
+    .put(passportCall('jwt'), roleAuth(['USER']),cartController.updateProductsCart)
+    .delete(passportCall('jwt'), roleAuth(['USER']),cartController.removeAllProductsFromCart)
 
 cartRouter.route('/:cid/product/:pid')
-    .post(cartController.addProductToCart)
-    .put(cartController.modifyQuantity)
-    .delete(cartController.removeProductFromCart)
+    .post(passportCall('jwt'), roleAuth(['USER']),cartController.addProductToCart)
+    .put(passportCall('jwt'), roleAuth(['USER']),cartController.modifyQuantity)
+    .delete(passportCall('jwt'), roleAuth(['USER']),cartController.removeProductFromCart)
 
     cartRouter.param('cid', (req, res, next, cid)=>{
         if(cid) return next()
         return res.status(400).json({status: "Error",message: "Invalid Cart id"})
     })
 
-    cartRouter.param('cid', (req, res, next, pid)=>{
+    cartRouter.param('pid', (req, res, next, pid)=>{
         if(pid) return next()
         return res.status(400).json({status: "Error",message: "Invalid Product id"})
     })

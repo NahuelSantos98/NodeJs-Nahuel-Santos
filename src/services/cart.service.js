@@ -94,7 +94,6 @@ class CartService {
             }
 
             const index = cartFound.products.findIndex(p => p.prodId._id == prodId)
-            //prodId es un objeto que contiene la info del producto (_id)
 
             if (index == -1) return res.status(404).json({ status: "error", message: `Product with id: ${prodId} not found ` })
 

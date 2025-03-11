@@ -72,7 +72,7 @@ class UserService {
         try {
             const { email, password } = user;
 
-            const userExist = await this.getByEmail(email);            
+            const userExist = await this.getByEmail(email);  
             if (!userExist) throw new Error("User not found");
 
             const isPswValid = isValidPassword(password, userExist);
