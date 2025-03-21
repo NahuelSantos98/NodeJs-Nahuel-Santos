@@ -6,14 +6,14 @@ import { passportCall } from "../../middlewares/passportCall.middleware.js";
 
 const productRouter = Router();
 
-(productRouter.route('/')
+productRouter.route('/')
     .get( productController.getAllFiltered)
-    .post(passportCall('jwt'), [validateProduct()], roleAuth(['ADMIN']),productController.createProduct))
+    .post(passportCall('jwt'), [validateProduct()], roleAuth(['ADMIN']), productController.createProduct)
 
 productRouter.route('/:pid')
-    .get(productController.getProductById)
-    .put(passportCall('jwt'), [validateUpdateProduct()], roleAuth(['ADMIN']),productController.updateProductById)
-    .delete(passportCall('jwt'), roleAuth(['ADMIN']),productController.deleteProductById)
+    .get( productController.getProductById)
+    .put(passportCall('jwt'), [validateUpdateProduct()], roleAuth(['ADMIN']), productController.updateProductById)
+    .delete(passportCall('jwt'), roleAuth(['ADMIN']), productController.deleteProductById)
 
     productRouter.param('pid', (req, res, next, pid)=>{
         if(pid) return next()

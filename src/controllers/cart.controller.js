@@ -13,6 +13,7 @@ class CartController {
         this.modifyQuantity = this.modifyQuantity.bind(this);
         this.removeProductFromCart = this.removeProductFromCart.bind(this);
         this.removeAllProductsFromCart = this.removeAllProductsFromCart.bind(this);
+        this.closePurchase = this.closePurchase.bind(this);
     }
 
     async getAllCarts(req, res, next) {
@@ -196,6 +197,22 @@ class CartController {
     
         } catch (e) {
             console.error('An error occurred removeAllProductsFromCart', e);
+            next(e)
+        }
+    }
+
+    async closePurchase(req, res, next){
+        try {
+            let cartId = req.params.cid;
+            let user = req.user
+            if (!cartId) {
+                return res.status(400).json({ status: "error", error: "The cart id is undefined", message: "The Cart id must be provided" });
+            }
+
+            const response = await this.service.closePurchase(cartId, user, res)
+            res.status(200).json({ status: "success", payload: response, message: "The purchase has been closed" })
+        } catch (e) {
+            console.error('An error occurred closePurchase', e);
             next(e)
         }
     }

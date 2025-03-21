@@ -1,6 +1,5 @@
 import { cartDao } from "../dao/cart.dao.js"
 import CartOutputDTO from "../dto/output/cart.output.dto.js";
-import CartInputDTO from '../dto/input/cart.input.dto.js'
 
 class CartRepository{
     constructor(dao){
@@ -104,6 +103,15 @@ class CartRepository{
             return new CartOutputDTO(response)
         } catch (e) {
             throw new Error("Error removing all products from cart", e);
+        }
+    }
+
+    async closePurchase(cart){
+        try {
+            const response = await this.dao.saveCart(cart);
+            return new CartOutputDTO(response);
+        } catch (e) {
+            throw new Error("Error closing purchase", e);
         }
     }
 

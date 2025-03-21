@@ -24,6 +24,15 @@ class ProductRepository{
         }
     }
 
+    async getProductByIdPlain(id) {
+        try {
+            const response = await this.dao.getById(id); 
+            return response
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+
     async getProductById(id) {
         try {
             const response = await this.dao.getById(id); 

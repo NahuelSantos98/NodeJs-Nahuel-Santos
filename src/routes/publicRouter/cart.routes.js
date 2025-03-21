@@ -20,6 +20,9 @@ cartRouter.route('/:cid/product/:pid')
     .put(passportCall('jwt'), roleAuth(['USER']),cartController.modifyQuantity)
     .delete(passportCall('jwt'), roleAuth(['USER']),cartController.removeProductFromCart)
 
+cartRouter.route('/:cid/purchase')
+    .post(passportCall('jwt'), roleAuth(['USER']),cartController.closePurchase) //Acordarse passportCall asigna el req.user
+
     cartRouter.param('cid', (req, res, next, cid)=>{
         if(cid) return next()
         return res.status(400).json({status: "Error",message: "Invalid Cart id"})

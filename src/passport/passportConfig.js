@@ -15,7 +15,6 @@ const strategyJWT = {
 
 const verifyToken = async (jwt_payload, done) => { //Verifica el token al momento de recibirse
     //req.user = jwt_payload
-    console.log(jwt_payload);
 
     if (!jwt_payload) return done(null, false, { messages: "User does not exists" });
     return done(null, jwt_payload);
