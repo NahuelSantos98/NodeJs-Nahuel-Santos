@@ -1,6 +1,7 @@
 import { cartRepository } from '../repository/cart.repository.js';
 import { productRepository } from '../repository/product.repository.js';
 import { ticketService } from '../services/ticket.service.js';
+import { sendMailGmail } from '../controllers/email.controller.js';
 
 class CartService {
     constructor(repository) {
@@ -223,7 +224,11 @@ class CartService {
             }
 
             try {
-                if(response) await this.removeAllProductsFromCart(cartId)
+                if(response) {
+                    await this.removeAllProductsFromCart(cartId)
+                    await sendMailGmail(ticket, user.email)
+                }
+                
             } catch (error) {
                 throw new Error("Error emptying cart: " + error.message);
             }
